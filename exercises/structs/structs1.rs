@@ -9,9 +9,9 @@
 struct ColorClassicStruct {
     // TODO: Something goes here
     // u8表示无符号8位整数
-    red:u8,
-    green:u8,
-    blue:u8,
+    pub red:u8,
+    pub green:u8,
+    pub blue:u8,
 }
 
 // struct ColorTupleStruct(/* TODO: Something goes here */);
