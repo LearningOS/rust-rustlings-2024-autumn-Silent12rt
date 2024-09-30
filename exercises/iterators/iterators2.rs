@@ -15,7 +15,11 @@ pub fn capitalize_first(input: &str) -> String {
     let mut c = input.chars();
     match c.next() {
         None => String::new(),
-        Some(first) => ???,
+        Some(first) => {
+            let up_first=first.to_uppercase().to_string();
+            let rest=c.collect();
+            up_first+=rest;
+        },
     }
 }
 
