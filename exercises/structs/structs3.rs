@@ -6,7 +6,6 @@
 //
 // Execute `rustlings hint structs3` or use the `hint` watch subcommand for a
 // hint.
-// I AM NOT DONEcar
 
 #[derive(Debug)]
 struct Package {
