@@ -2,7 +2,7 @@
 	single linked list merge
 	This problem requires you to merge two ordered singly linked lists into one ordered singly linked list
 */
-// I AM NOT DONE
+
 
 use std::fmt::{self, Display, Formatter};
 use std::ptr::NonNull;
@@ -23,19 +23,19 @@ impl<T> Node<T> {
     }
 }
 #[derive(Debug)]
-struct LinkedList<T> {
+struct LinkedList<T: Clone + Ord> {
     length: u32,
     start: Option<NonNull<Node<T>>>,
     end: Option<NonNull<Node<T>>>,
 }
 
-impl<T> Default for LinkedList<T> {
+impl<T: Clone + Ord> Default for LinkedList<T> {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl<T> LinkedList<T> {
+impl<T: Clone + Ord> LinkedList<T> {
     pub fn new() -> Self {
         Self {
             length: 0,
@@ -69,20 +69,45 @@ impl<T> LinkedList<T> {
             },
         }
     }
-	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
-	{
-		//TODO
-		Self {
-            length: 0,
-            start: None,
-            end: None,
+    pub fn merge(list_a: LinkedList<T>, list_b: LinkedList<T>) -> Self {
+        let mut list_c=LinkedList::new();
+
+        let mut ptr_a=list_a.start;
+        let mut ptr_b=list_b.start;
+
+        while let (Some(node_a),Some(node_b))=(ptr_a,ptr_b){
+            let val_a = unsafe { node_a.as_ref() }; // 从 node_a 获取值
+            let val_b = unsafe { node_b.as_ref() }; // 从 node_b 获取值
+
+            if val_a.val<=val_b.val{
+                list_c.add(val_a.val.clone());
+                ptr_a=val_a.next;
+            }
+            else{
+                list_c.add(val_b.val.clone());
+                ptr_b=val_b.next;
+            }
         }
-	}
+
+        while let Some(node_a)=ptr_a{
+            let val_a = unsafe { node_a.as_ref() };
+            list_c.add(val_a.val.clone());
+            ptr_a=val_a.next;
+        }
+        while let Some(node_b)=ptr_b{
+            let val_b = unsafe { node_b.as_ref() }; 
+            list_c.add(val_b.val.clone());
+            ptr_b=val_b.next;
+        }
+
+        list_c
+    }
+    
 }
 
 impl<T> Display for LinkedList<T>
 where
-    T: Display,
+    T: Display + Clone + std::cmp::Ord,
 {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         match self.start {
